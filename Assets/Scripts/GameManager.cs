@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+
 public class GameManager : MonoBehaviour
 {
     public GameObject startPanel;
@@ -13,6 +14,9 @@ public TMP_Text packageCounterText;
     public int totalPackages = 3;
 
     private int deliveredPackages = 0;
+
+    public TMP_Text timerText;
+public float timeLeft = 60f;
     private bool gameStarted = false;
     private bool gameEnded = false;
 
@@ -24,6 +28,8 @@ public TMP_Text packageCounterText;
         gameOverPanel.SetActive(false);
 
          UpdatePackageCounter();
+
+         UpdateTimerText();
     }
 
     public void StartGame()
@@ -50,6 +56,29 @@ public TMP_Text packageCounterText;
     void UpdatePackageCounter()
 {
     packageCounterText.text = "Packages: " + deliveredPackages + "/" + totalPackages;
+}
+
+void Update()
+{
+    if (!gameStarted || gameEnded)
+    {
+        return;
+    }
+
+    timeLeft -= Time.deltaTime;
+
+    if (timeLeft <= 0)
+    {
+        timeLeft = 0;
+        GameOver();
+    }
+
+    UpdateTimerText();
+}
+
+void UpdateTimerText()
+{
+    timerText.text = "Time: " + Mathf.CeilToInt(timeLeft);
 }
 
     public void GameOver()
