@@ -19,11 +19,15 @@ public TMP_Text packageCounterText;
 public float timeLeft = 60f;
 
 public TMP_Text scoreText;
+
+public TMP_Text highScoreText;
     private bool gameStarted = false;
     private bool gameEnded = false;
 
     private int score = 0;
 public int pointsPerPackage = 100;
+
+private int highScore = 0;
 
     void Start()
     {
@@ -37,6 +41,9 @@ public int pointsPerPackage = 100;
          UpdateTimerText();
 
          UpdateScoreText();
+
+         highScore = PlayerPrefs.GetInt("HighScore", 0);
+UpdateHighScoreText();
     }
 
     public void StartGame()
@@ -96,6 +103,11 @@ void UpdateScoreText()
     scoreText.text = "Score: " + score;
 }
 
+void UpdateHighScoreText()
+{
+    highScoreText.text = "High Score: " + highScore;
+}
+
     public void GameOver()
     {
         if (gameEnded)
@@ -112,6 +124,15 @@ void UpdateScoreText()
         {
             gameOverScoreText.text = "Packages delivered: " + deliveredPackages + "/" + totalPackages;
         }
+
+        if (score > highScore)
+{
+    highScore = score;
+    PlayerPrefs.SetInt("HighScore", highScore);
+    PlayerPrefs.Save();
+}
+
+UpdateHighScoreText();
 
         Debug.Log("GAME OVER");
     }
