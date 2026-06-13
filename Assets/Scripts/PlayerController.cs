@@ -7,36 +7,35 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Vooruit
+        float moveInput = 0f;
+        float turnInput = 0f;
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                transform.Rotate(Vector3.up * -turnSpeed * Time.deltaTime);
-            }
-
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                transform.Rotate(Vector3.up * turnSpeed * Time.deltaTime);
-            }
+            moveInput = 1f;
         }
 
-        // Achteruit
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            transform.Translate(Vector3.back * moveSpeed * Time.deltaTime);
+            moveInput = -1f;
+        }
 
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                transform.Rotate(Vector3.up * turnSpeed * Time.deltaTime);
-            }
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            turnInput = -1f;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            turnInput = 1f;
+        }
 
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                transform.Rotate(Vector3.up * -turnSpeed * Time.deltaTime);
-            }
+        if (moveInput != 0f)
+        {
+            transform.Translate(Vector3.forward * moveInput * moveSpeed * Time.deltaTime, Space.Self);
+
+            // Tijdens achteruit sturen draait de auto omgekeerd, zoals een echte auto.
+            float reverseSteering = moveInput > 0f ? 1f : -1f;
+            transform.Rotate(Vector3.up * turnInput * turnSpeed * reverseSteering * Time.deltaTime, Space.Self);
         }
     }
 }
