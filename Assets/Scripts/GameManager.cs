@@ -17,8 +17,13 @@ public TMP_Text packageCounterText;
 
     public TMP_Text timerText;
 public float timeLeft = 60f;
+
+public TMP_Text scoreText;
     private bool gameStarted = false;
     private bool gameEnded = false;
+
+    private int score = 0;
+public int pointsPerPackage = 100;
 
     void Start()
     {
@@ -30,6 +35,8 @@ public float timeLeft = 60f;
          UpdatePackageCounter();
 
          UpdateTimerText();
+
+         UpdateScoreText();
     }
 
     public void StartGame()
@@ -47,6 +54,9 @@ public float timeLeft = 60f;
     }
 
     deliveredPackages++;
+
+    score += pointsPerPackage;
+UpdateScoreText();
 
     UpdatePackageCounter();
 
@@ -79,6 +89,11 @@ void Update()
 void UpdateTimerText()
 {
     timerText.text = "Time: " + Mathf.CeilToInt(timeLeft);
+}
+
+void UpdateScoreText()
+{
+    scoreText.text = "Score: " + score;
 }
 
     public void GameOver()
