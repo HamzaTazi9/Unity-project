@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public GameObject startPanel;
     public GameObject gameOverPanel;
 
+public TMP_Text packageCounterText;
     public TMP_Text gameOverScoreText;
 
     public int totalPackages = 3;
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
 
         startPanel.SetActive(true);
         gameOverPanel.SetActive(false);
+
+         UpdatePackageCounter();
     }
 
     public void StartGame()
@@ -32,15 +35,22 @@ public class GameManager : MonoBehaviour
 
     public void DeliverPackage()
     {
-        if (!gameStarted || gameEnded)
-        {
-            return;
-        }
-
-        deliveredPackages++;
-
-        Debug.Log("Package delivered: " + deliveredPackages + "/" + totalPackages);
+         if (!gameStarted || gameEnded)
+    {
+        return;
     }
+
+    deliveredPackages++;
+
+    UpdatePackageCounter();
+
+    Debug.Log("Package delivered: " + deliveredPackages + "/" + totalPackages);
+    }
+
+    void UpdatePackageCounter()
+{
+    packageCounterText.text = "Packages: " + deliveredPackages + "/" + totalPackages;
+}
 
     public void GameOver()
     {
