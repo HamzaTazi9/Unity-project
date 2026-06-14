@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 
+
 public class GameManager : MonoBehaviour
 {
     public GameObject startPanel;
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text highScoreText;
 
     public GameObject packageFeedbackText;
+
+    public TMP_Text countdownText;
 
     private bool gameStarted = false;
     private bool gameEnded = false;
@@ -67,6 +70,11 @@ public class GameManager : MonoBehaviour
             volumeSlider.value = AudioListener.volume;
         }
 
+        if (countdownText != null)
+{
+    countdownText.gameObject.SetActive(false);
+}
+
         UpdatePackageCounter();
         UpdateTimerText();
         UpdateScoreText();
@@ -77,9 +85,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        startPanel.SetActive(false);
-        gameStarted = true;
-        Time.timeScale = 1f;
+           startPanel.SetActive(false);
+    StartCoroutine(StartCountdown());
     }
 
     public void DeliverPackage()
@@ -299,5 +306,27 @@ IEnumerator ShowFeedbackCoroutine()
     yield return new WaitForSeconds(1f);
 
     packageFeedbackText.SetActive(false);
+}
+
+IEnumerator StartCountdown()
+{
+    countdownText.gameObject.SetActive(true);
+
+    countdownText.text = "3";
+    yield return new WaitForSecondsRealtime(1f);
+
+    countdownText.text = "2";
+    yield return new WaitForSecondsRealtime(1f);
+
+    countdownText.text = "1";
+    yield return new WaitForSecondsRealtime(1f);
+
+    countdownText.text = "GO!";
+    yield return new WaitForSecondsRealtime(1f);
+
+    countdownText.gameObject.SetActive(false);
+
+    gameStarted = true;
+    Time.timeScale = 1f;
 }
 }
