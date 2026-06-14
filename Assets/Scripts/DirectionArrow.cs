@@ -14,16 +14,9 @@ public class DirectionArrow : MonoBehaviour
             return;
         }
 
-        Transform target;
-
-        if (currentPackage.IsPickedUp())
-        {
-            target = deliveryTarget;
-        }
-        else
-        {
-            target = currentPackage.transform;
-        }
+        Transform target = currentPackage.IsPickedUp()
+            ? deliveryTarget
+            : currentPackage.transform;
 
         Vector3 direction = target.position - transform.position;
         direction.y = 0;
