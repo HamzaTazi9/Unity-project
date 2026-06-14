@@ -18,7 +18,7 @@ public class Package : MonoBehaviour
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
 
-            FindFirstObjectByType<GameManager>().DeliverPackage();
+            
 
             Debug.Log("Package picked up!");
         }

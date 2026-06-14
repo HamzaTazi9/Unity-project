@@ -10027,9 +10027,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e58dc6acfb6714b22a8d07f9fe763af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DirectionArrow
-  packageTarget: {fileID: 329982735}
+  packages: []
   deliveryTarget: {fileID: 1074072897}
-  packageScript: {fileID: 781886754}
 --- !u!1001 &580403587
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13240,7 +13239,7 @@ GameObject:
   - component: {fileID: 781886751}
   - component: {fileID: 781886754}
   m_Layer: 0
-  m_Name: PackageBox
+  m_Name: PackageBox_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
