@@ -9,13 +9,19 @@ public class PlayerController : MonoBehaviour
     private float moveInput = 0f;
     private float turnInput = 0f;
     private float fixedY;
+    private AudioSource engineAudio;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         fixedY = transform.position.y;
-    }
+        // audio
+        rb = GetComponent<Rigidbody>();
+        fixedY = transform.position.y;
 
+        engineAudio = GetComponent<AudioSource>();
+    }
+    
     void Update()
     {
         moveInput = 0f;
@@ -39,6 +45,22 @@ public class PlayerController : MonoBehaviour
         {
             turnInput = 1f;
         }
+
+        // audio 
+        if (moveInput != 0f)
+{
+    if (!engineAudio.isPlaying)
+    {
+        engineAudio.Play();
+    }
+}
+else
+{
+    if (engineAudio.isPlaying)
+    {
+        engineAudio.Stop();
+    }
+}
     }
 
     void FixedUpdate()

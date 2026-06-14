@@ -7,6 +7,14 @@ public class CollisionPenalty : MonoBehaviour
 
     private float lastHitTime = 0f;
 
+    //audio 
+    private AudioSource[] audioSources;
+
+    void Start()
+{
+    audioSources = GetComponents<AudioSource>();
+}
+// end audio 
     void Update()
     {
         if (Time.time - lastHitTime < hitCooldown)
@@ -24,6 +32,8 @@ public class CollisionPenalty : MonoBehaviour
             {
                 lastHitTime = Time.time;
                 FindFirstObjectByType<GameManager>().HitObstacle();
+                //audio 
+                audioSources[1].Play();
                 Debug.Log("Obstacle nearby! -10 points");
                 return;
             }
@@ -41,6 +51,8 @@ public class CollisionPenalty : MonoBehaviour
         {
             lastHitTime = Time.time;
             FindFirstObjectByType<GameManager>().HitMovingObstacle();
+            //audio 
+            audioSources[2].Play();
             Debug.Log("Traffic collision! -25 points");
         }
     }
