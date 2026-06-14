@@ -354,18 +354,17 @@ public void HitObstacle()
 
     if (score < 0)
     {
-         score = 0;
-         UpdateScoreText();
-        ShowCollisionFeedback("-10 points");
-        GameOver();
-        return;
-        
+        score = 0;
     }
 
     UpdateScoreText();
     ShowCollisionFeedback("-10 points");
-    Debug.Log("Obstacle hit! -10 points");
-    
+    Debug.Log("Obstacle hit! Score: " + score);
+
+    if (score <= 0)
+    {
+        GameOver();
+    }
 }
 
 public void HitMovingObstacle()
@@ -375,18 +374,16 @@ public void HitMovingObstacle()
     if (score < 0)
     {
         score = 0;
-        UpdateScoreText();
-        ShowCollisionFeedback("-25 points");
-        GameOver();
-        return;
-       
     }
 
     UpdateScoreText();
     ShowCollisionFeedback("-25 points");
-    Debug.Log("Traffic collision! -25 points");
-    
-    
+    Debug.Log("Traffic collision! Score: " + score);
+
+    if (score <= 0)
+    {
+        GameOver();
+    }
 }
 
 public void ShowCollisionFeedback(string message)
