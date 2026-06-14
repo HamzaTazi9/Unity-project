@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 
+
 public class GameManager : MonoBehaviour
 {
     public GameObject startPanel;
@@ -34,17 +35,22 @@ public class GameManager : MonoBehaviour
 
     public GameObject packageFeedbackText;
 
+    public TMP_Text countdownText;
+
     private bool gameStarted = false;
     private bool gameEnded = false;
     private bool isPaused = false;
 
-    private int score = 0;
+    private int score = 100;
     public int pointsPerPackage = 100;
 
     // Zineb : Obstacle Penalty 
     public int obstaclePenalty = 10;
     public int movingObstaclePenalty = 25;
+    public TMP_Text collisionFeedbackText;
     // end: Obstacle Penalty 
+
+
 
     private int highScore = 0;
 
@@ -72,6 +78,11 @@ public class GameManager : MonoBehaviour
             volumeSlider.value = AudioListener.volume;
         }
 
+        if (countdownText != null)
+{
+    countdownText.gameObject.SetActive(false);
+}
+
         UpdatePackageCounter();
         UpdateTimerText();
         UpdateScoreText();
@@ -82,9 +93,8 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        startPanel.SetActive(false);
-        gameStarted = true;
-        Time.timeScale = 1f;
+           startPanel.SetActive(false);
+    StartCoroutine(StartCountdown());
     }
 
     public void DeliverPackage()
@@ -306,6 +316,29 @@ IEnumerator ShowFeedbackCoroutine()
     packageFeedbackText.SetActive(false);
 }
 
+IEnumerator StartCountdown()
+{
+    countdownText.gameObject.SetActive(true);
+
+    countdownText.text = "3";
+    yield return new WaitForSecondsRealtime(1f);
+
+    countdownText.text = "2";
+    yield return new WaitForSecondsRealtime(1f);
+
+    countdownText.text = "1";
+    yield return new WaitForSecondsRealtime(1f);
+
+    countdownText.text = "GO!";
+    yield return new WaitForSecondsRealtime(1f);
+
+    countdownText.gameObject.SetActive(false);
+
+    gameStarted = true;
+    Time.timeScale = 1f;
+}
+
+
 // Zineb : Penalty Obstacle 
 public void HitObstacle()
 {
@@ -314,13 +347,17 @@ public void HitObstacle()
     if (score < 0)
     {
          score = 0;
-        UpdateScoreText();
+         UpdateScoreText();
+        ShowCollisionFeedback("-10 points");
         GameOver();
         return;
+        
     }
 
     UpdateScoreText();
+    ShowCollisionFeedback("-10 points");
     Debug.Log("Obstacle hit! -10 points");
+    
 }
 
 public void HitMovingObstacle()
@@ -331,15 +368,36 @@ public void HitMovingObstacle()
     {
         score = 0;
         UpdateScoreText();
+        ShowCollisionFeedback("-25 points");
         GameOver();
         return;
+       
     }
 
     UpdateScoreText();
+    ShowCollisionFeedback("-25 points");
     Debug.Log("Traffic collision! -25 points");
+    
+    
 }
 
+public void ShowCollisionFeedback(string message)
+{
+    StopCoroutine(nameof(ShowCollisionFeedbackCoroutine));
+    StartCoroutine(ShowCollisionFeedbackCoroutine(message));
+}
+
+IEnumerator ShowCollisionFeedbackCoroutine(string message)
+{
+    collisionFeedbackText.gameObject.SetActive(true);
+    collisionFeedbackText.text = message;
+
+    yield return new WaitForSeconds(1f);
+
+    collisionFeedbackText.gameObject.SetActive(false);
+}
 // end penalty Obstacle 
 
 }
 
+// Version update
