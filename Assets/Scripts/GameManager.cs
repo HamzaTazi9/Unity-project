@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text scoreText;
 
     public TMP_Text highScoreText;
+
+    public GameObject packageFeedbackText;
 
     private bool gameStarted = false;
     private bool gameEnded = false;
@@ -92,6 +95,8 @@ public class GameManager : MonoBehaviour
         UpdateScoreText();
 
         UpdatePackageCounter();
+
+        ShowPackageFeedback();
 
         Debug.Log("Package delivered: " + deliveredPackages + "/" + totalPackages);
 
@@ -281,4 +286,18 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void ShowPackageFeedback()
+{
+    StartCoroutine(ShowFeedbackCoroutine());
+}
+
+IEnumerator ShowFeedbackCoroutine()
+{
+    packageFeedbackText.SetActive(true);
+
+    yield return new WaitForSeconds(1f);
+
+    packageFeedbackText.SetActive(false);
+}
 }
