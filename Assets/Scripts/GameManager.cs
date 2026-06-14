@@ -1,12 +1,16 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public GameObject startPanel;
     public GameObject gameOverPanel;
     public GameObject winPanel;
+
+    public GameObject pausePanel;
+    public Slider volumeSlider;
 
     public TMP_Text packageCounterText;
     public TMP_Text gameOverScoreText;
@@ -29,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     private bool gameStarted = false;
     private bool gameEnded = false;
+    private bool isPaused = false;
 
     private int score = 0;
     public int pointsPerPackage = 100;
@@ -47,6 +52,16 @@ public class GameManager : MonoBehaviour
         if (winPanel != null)
         {
             winPanel.SetActive(false);
+        }
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.value = AudioListener.volume;
         }
 
         UpdatePackageCounter();
@@ -96,7 +111,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (!gameStarted || gameEnded)
+        if (Input.GetKeyDown(KeyCode.Escape) && gameStarted && !gameEnded)
+        {
+            TogglePause();
+        }
+
+        if (!gameStarted || gameEnded || isPaused)
         {
             return;
         }
@@ -134,6 +154,47 @@ public class GameManager : MonoBehaviour
         {
             highScoreText.text = "High Score: " + highScore;
         }
+    }
+
+    public void TogglePause()
+    {
+        if (isPaused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+        isPaused = true;
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(true);
+        }
+
+        Time.timeScale = 0f;
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+
+        if (pausePanel != null)
+        {
+            pausePanel.SetActive(false);
+        }
+
+        Time.timeScale = 1f;
+    }
+
+    public void SetVolume(float volume)
+    {
+        AudioListener.volume = volume;
     }
 
     public void GameOver()
