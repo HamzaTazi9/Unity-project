@@ -38,13 +38,16 @@ public class GameManager : MonoBehaviour
     private bool gameEnded = false;
     private bool isPaused = false;
 
-    private int score = 0;
+    private int score = 100;
     public int pointsPerPackage = 100;
 
     // Zineb : Obstacle Penalty 
     public int obstaclePenalty = 10;
     public int movingObstaclePenalty = 25;
+    public TMP_Text collisionFeedbackText;
     // end: Obstacle Penalty 
+
+
 
     private int highScore = 0;
 
@@ -314,13 +317,17 @@ public void HitObstacle()
     if (score < 0)
     {
          score = 0;
-        UpdateScoreText();
+         UpdateScoreText();
+        ShowCollisionFeedback("-10 points");
         GameOver();
         return;
+        
     }
 
     UpdateScoreText();
+    ShowCollisionFeedback("-10 points");
     Debug.Log("Obstacle hit! -10 points");
+    
 }
 
 public void HitMovingObstacle()
@@ -331,14 +338,34 @@ public void HitMovingObstacle()
     {
         score = 0;
         UpdateScoreText();
+        ShowCollisionFeedback("-25 points");
         GameOver();
         return;
+       
     }
 
     UpdateScoreText();
+    ShowCollisionFeedback("-25 points");
     Debug.Log("Traffic collision! -25 points");
+    
+    
 }
 
+public void ShowCollisionFeedback(string message)
+{
+    StopCoroutine(nameof(ShowCollisionFeedbackCoroutine));
+    StartCoroutine(ShowCollisionFeedbackCoroutine(message));
+}
+
+IEnumerator ShowCollisionFeedbackCoroutine(string message)
+{
+    collisionFeedbackText.gameObject.SetActive(true);
+    collisionFeedbackText.text = message;
+
+    yield return new WaitForSeconds(1f);
+
+    collisionFeedbackText.gameObject.SetActive(false);
+}
 // end penalty Obstacle 
 
 }
