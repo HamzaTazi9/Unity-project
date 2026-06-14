@@ -2,15 +2,23 @@ using UnityEngine;
 
 public class DeliveryZone : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public DirectionArrow directionArrow;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
+        if (!other.CompareTag("Player")) return;
+        
+            Package currentPackage = directionArrow.GetCurrentPackage();
+
+            if (currentPackage != null && currentPackage.IsPickedUp())
+            {
+                FindFirstObjectByType<GameManager>().DeliverPackage();
+
+                currentPackage.gameObject.SetActive(false);
+
+                Debug.Log("Package delivered!");
+            }
+            
         
     }
 }
