@@ -318,6 +318,14 @@ IEnumerator ShowFeedbackCoroutine()
 
 IEnumerator StartCountdown()
 {
+    if (countdownText == null)
+    {
+        Debug.LogWarning("Countdown Text is not assigned in the GameManager.");
+        gameStarted = true;
+        Time.timeScale = 1f;
+        yield break;
+    }
+
     countdownText.gameObject.SetActive(true);
 
     countdownText.text = "3";
