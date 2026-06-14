@@ -44,6 +44,11 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     public int pointsPerPackage = 100;
 
+    // Zineb : Obstacle Penalty 
+    public int obstaclePenalty = 10;
+    public int movingObstaclePenalty = 25;
+    // end: Obstacle Penalty 
+
     private int highScore = 0;
 
     void Start()
@@ -329,4 +334,42 @@ IEnumerator StartCountdown()
     gameStarted = true;
     Time.timeScale = 1f;
 }
+
+
+// Zineb : Penalty Obstacle 
+public void HitObstacle()
+{
+    score -= obstaclePenalty;
+
+    if (score < 0)
+    {
+         score = 0;
+        UpdateScoreText();
+        GameOver();
+        return;
+    }
+
+    UpdateScoreText();
+    Debug.Log("Obstacle hit! -10 points");
 }
+
+public void HitMovingObstacle()
+{
+    score -= movingObstaclePenalty;
+
+    if (score < 0)
+    {
+        score = 0;
+        UpdateScoreText();
+        GameOver();
+        return;
+    }
+
+    UpdateScoreText();
+    Debug.Log("Traffic collision! -25 points");
+}
+
+// end penalty Obstacle 
+
+}
+
