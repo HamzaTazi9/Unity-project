@@ -6,19 +6,26 @@ public class MovingObstacle : MonoBehaviour
     public float moveTime = 10f;
 
     private float timer = 0f;
-    private bool isMoving = true;
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+
+    void Start()
+    {
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+    }
 
     void Update()
     {
-        if (isMoving)
-        {
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
-            timer += Time.deltaTime;
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
 
-            if (timer >= moveTime)
-            {
-                isMoving = false;
-            }
+        timer += Time.deltaTime;
+
+        if (timer >= moveTime)
+        {
+            transform.position = startPosition;
+            transform.rotation = startRotation;
+            timer = 0f;
         }
     }
 }
